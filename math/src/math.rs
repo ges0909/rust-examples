@@ -5,6 +5,7 @@ pub fn sqrt<T: Num + Copy>(n: T) -> Result<T, String> {
     Result::Ok(n * n)
 }
 
+#[allow(dead_code)]
 fn main() {
     println!("{}", sqrt(19).unwrap());
     println!("{}", sqrt(1.9).unwrap());
