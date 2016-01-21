@@ -1,0 +1,10 @@
+[package]
+name = "macro_use"
+version = "0.0.1"
+authors = ["ges0909 <gerrit.schrader@gmail.com>"]
+
+[[bin]]
+name = "macro_use"
+
+[dependencies]
+mac = "*"

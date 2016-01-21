@@ -1,10 +1,10 @@
 [package]
-name = "libmac"
+name = "math"
 version = "0.1.0"
 authors = ["ges0909 <gerrit.schrader@gmail.com>"]
 
-[[bin]]
-name = "macrotest"
-
 [dependencies]
-mac = "*"
+num = "*"
+
+[lib]
+name = "math"

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# A collection of .gitignore templates:
+# - https://github.com/github/gitignore
+
 # To be done before:
 # - export GITHUB_USER=...
 # - export GITHUB_PASS=...
