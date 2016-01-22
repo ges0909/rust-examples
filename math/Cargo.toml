@@ -6,5 +6,7 @@ authors = ["ges0909 <gerrit.schrader@gmail.com>"]
 [dependencies]
 num = "*"
 
+# Integration style tests seems to be possible only for lib
+# crates and has to be in an own 'tests' dir.
 [lib]
 name = "math"
