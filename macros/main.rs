@@ -1,3 +1,4 @@
+// fragment specifier: expr
 macro_rules! welcome {
 	() => (
 		println!("Welcome Hugo!")
@@ -13,6 +14,7 @@ macro_rules! welcome {
 	);
 }
 
+// fragment specifier: ident
 macro_rules! create_fn {
     ($fname:ident) => (
     	fn $fname() { println!("Benvenuto! Sono il funzione '{}'.", stringify!($fname)) }
@@ -22,8 +24,18 @@ macro_rules! create_fn {
 create_fn!(benvenuto);
 
 fn main() {
+    // expr
     welcome!();
     welcome!("Hugo");
     welcome!("Welcome {}, {} and {}!", "Hugo", "Go", "Brightone");
+    // ident
     benvenuto();
+    // path
+    // ty
+    // pat
+    // stmt
+    // block
+    // item
+    // meta
+    // tt
 }
