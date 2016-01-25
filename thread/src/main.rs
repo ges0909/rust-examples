@@ -1,59 +1,43 @@
-// extern crate std;
-extern crate time;
+extern crate num_cpus;
+extern crate threadpool;
 
 use std::thread;
-use time::{PreciseTime, Duration};
+use threadpool::ThreadPool; 
 
-/**
+static NTHREADS: u32 = 10000;
+
 fn main() {
-    let start = PreciseTime::now();
-    let handles: Vec<_> = (0..10)
-                              .map(|_| {
-                                  thread::spawn(|| {
-                                      let mut x = 0;
-                                      for _ in 0..5_000_000_0 {
-                                          x += 1
-                                      }
-                                      x
-                                  })
-                              })
-                              .collect();
+	// 1. spawn
+    let handle = thread::spawn(|| {
+        print!("I am a spawned thread!");
+    });
+    let output = handle.join().unwrap();
+    println!("{:?}", output); // ':?' to avoid =>   error: the trait `core::fmt::Display` is not implemented for the type `()`
 
-    for h in handles {
-        println!("Thread finished with count={}",
-                 h.join().map_err(|_| "Could not join a thread!").unwrap());
+    for n in 0..NTHREADS {
+    	let _ = thread::spawn(move || { print!("{}; ", n); }).join();
     }
-    let end = PreciseTime::now();
-    let duration: time::Duration = start.to(end);
-    println!("Duration={0} ms", duration.num_milliseconds());
-}
-*/
-fn main() {
+	println!("");
 
-    let start = PreciseTime::now();
+	// 2. number of cpus
+	let ncpus = num_cpus::get();
+	println!("#cpus = {}", ncpus);
 
-    let handles: Vec<thread::JoinHandle<_>> = (0..10)
-                                                  .map(|_| {
-                                                      thread::spawn(|| {
-                                                          let mut x = 0;
-                                                          for _ in 0..5_000_000_00 {
-                                                              x += 1
-                                                          }
-                                                      })
-                                                  })
-                                                  .collect();
+	// 3.thread pool
+	let pool = ThreadPool::new(ncpus);
+	for n in 0..ncpus {
+		pool.execute(move || {
+			println!("this is thread # {}", n);
+		});
+	}
+	thread::sleep_ms(50);
 
-    println!("{} threads started -- wait on end", handles.len());
+	// 4. panicking thread
+	let result = thread::spawn(move || {
+		panic!("panic: file={}, line={}", file!(), line!());
+	}).join();
 
-    for h in handles {
-        match h.join() { // join() returns Result<T>
-            Ok(val) => println!("okay"),
-            Err(msg) => println!("failed"),
-        }
-    }
-
-    let end = PreciseTime::now();
-    let duration: time::Duration = start.to(end);
-
-    println!("Duration={0} ms", duration.num_milliseconds());
+	if result.is_err() {
+		println!("The child has panicked!");
+	}
 }
